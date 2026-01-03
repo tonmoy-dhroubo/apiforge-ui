@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LogOut, Menu, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -103,6 +104,7 @@ export function TopBar({
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
             <UserCircle2 className="h-6 w-6" />
           </div>
+          <ThemeToggle />
           <Button variant="secondary" className="hidden md:inline-flex" onClick={onLogout}>
             Logout
           </Button>
