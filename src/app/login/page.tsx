@@ -1,0 +1,102 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { apiRequest } from "@/lib/api";
+import { setAuthToken, setAuthUser } from "@/lib/auth";
+import { AuthResponse } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      const response = await apiRequest<AuthResponse>("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response?.token) {
+        throw new Error("Invalid credentials");
+      }
+
+      setAuthToken(response.token);
+      setAuthUser({
+        username: response.username,
+        email: response.email,
+        roles: response.roles,
+      });
+      toast.success("Welcome back to ApiForge");
+      router.push("/");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Unable to sign in"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <Card className="glass-panel w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">ApiForge Studio</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Sign in with your ApiForge credentials to manage content.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Username
+              </label>
+              <Input
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="super_admin"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Password
+              </label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="********"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing in..." : "Sign in"}
+            </Button>
+          </form>
+          <Separator className="my-6" />
+          <div className="space-y-2 text-xs text-muted-foreground">
+            <p>
+              Tip: Register new users through the Auth Service endpoint
+              <span className="font-mono"> /api/auth/register</span>.
+            </p>
+            <p>
+              Default gateway URL: <span className="font-mono">http://localhost:8080</span>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
