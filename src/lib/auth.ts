@@ -1,4 +1,5 @@
 const TOKEN_KEY = "apiforge.token";
+const REFRESH_TOKEN_KEY = "apiforge.refreshToken";
 const USER_KEY = "apiforge.user";
 
 export function getAuthToken(): string | null {
@@ -11,9 +12,20 @@ export function setAuthToken(token: string) {
   window.localStorage.setItem(TOKEN_KEY, token);
 }
 
+export function getRefreshToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(REFRESH_TOKEN_KEY);
+}
+
+export function setRefreshToken(token: string) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(REFRESH_TOKEN_KEY, token);
+}
+
 export function clearAuthToken() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(TOKEN_KEY);
+  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
   window.localStorage.removeItem(USER_KEY);
 }
 

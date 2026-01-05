@@ -34,6 +34,7 @@ export interface ContentTypeDto {
 
 export interface AuthResponse {
   token: string;
+  refreshToken: string;
   type: string;
   userId: number;
   username: string;
@@ -63,7 +64,7 @@ export interface MediaDto {
   hash: string;
   ext?: string | null;
   mime?: string | null;
-  size?: number | null;
+  size?: number | string | null;
   url?: string | null;
   provider?: string | null;
   createdAt?: string;

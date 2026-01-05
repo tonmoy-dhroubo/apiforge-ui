@@ -35,6 +35,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { SpinnerEmpty } from "@/components/spinner-empty";
 
 export default function ContentEntriesPage() {
   const params = useParams();
@@ -44,9 +45,10 @@ export default function ContentEntriesPage() {
   const [media, setMedia] = useState<MediaDto[]>([]);
   const [form, setForm] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const [typeData, entryData, mediaData] = await Promise.all([
         apiRequest<ContentTypeDto>(`/api/content-types/api-id/${apiId}`),
@@ -61,7 +63,7 @@ export default function ContentEntriesPage() {
         error instanceof Error ? error.message : "Unable to load content"
       );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [apiId]);
 
@@ -219,7 +221,9 @@ export default function ContentEntriesPage() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {contentType?.fields?.length ? (
+          {isLoading ? (
+            <SpinnerEmpty />
+          ) : contentType?.fields?.length ? (
             <div className="grid gap-4 lg:grid-cols-2">
               {contentType.fields.map((field) => (
                 <div key={field.fieldName} className="space-y-2">
@@ -270,50 +274,61 @@ export default function ContentEntriesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {entries.map((entry) => (
-                <TableRow key={String(entry.id)}>
-                  <TableCell className="font-medium">
-                    {String(entry.id ?? "-")}
-                  </TableCell>
-                  {visibleFields.map((field) => (
-                    <TableCell key={field.fieldName}>
-                      {entry[field.fieldName]
-                        ? truncateMiddle(String(entry[field.fieldName]))
-                        : "-"}
-                    </TableCell>
-                  ))}
-                  <TableCell>
-                    {formatDate(entry.updated_at as string | undefined)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            View
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-h-[80vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle>Entry {String(entry.id)}</DialogTitle>
-                          </DialogHeader>
-                          <pre className="rounded-xl bg-muted/40 p-4 text-xs text-muted-foreground">
-                            {JSON.stringify(entry, null, 2)}
-                          </pre>
-                        </DialogContent>
-                      </Dialog>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(Number(entry.id))}
-                      >
-                        Delete
-                      </Button>
-                    </div>
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={visibleFields.length + 3}
+                    className="py-6"
+                  >
+                    <SpinnerEmpty />
                   </TableCell>
                 </TableRow>
-              ))}
-              {entries.length === 0 && (
+              )}
+              {!isLoading &&
+                entries.map((entry) => (
+                  <TableRow key={String(entry.id)}>
+                    <TableCell className="font-medium">
+                      {String(entry.id ?? "-")}
+                    </TableCell>
+                    {visibleFields.map((field) => (
+                      <TableCell key={field.fieldName}>
+                        {entry[field.fieldName]
+                          ? truncateMiddle(String(entry[field.fieldName]))
+                          : "-"}
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      {formatDate(entry.updated_at as string | undefined)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              View
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-h-[80vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle>Entry {String(entry.id)}</DialogTitle>
+                            </DialogHeader>
+                            <pre className="rounded-xl bg-muted/40 p-4 text-xs text-muted-foreground">
+                              {JSON.stringify(entry, null, 2)}
+                            </pre>
+                          </DialogContent>
+                        </Dialog>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(Number(entry.id))}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {!isLoading && entries.length === 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={visibleFields.length + 3}

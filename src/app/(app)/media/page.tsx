@@ -9,13 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { SpinnerEmpty } from "@/components/spinner-empty";
 
 export default function MediaPage() {
   const [media, setMedia] = useState<MediaDto[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadMedia = useCallback(async () => {
+    setIsLoading(true);
     try {
       const data = await apiMediaRequest<MediaDto[]>("/api/upload");
       setMedia(data ?? []);
@@ -23,6 +26,8 @@ export default function MediaPage() {
       toast.error(
         error instanceof Error ? error.message : "Unable to load media"
       );
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -92,49 +97,52 @@ export default function MediaPage() {
           <CardTitle>Library</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {media.map((asset) => (
-            <div
-              key={asset.id}
-              className="flex flex-col gap-3 rounded-xl border border-border/60 bg-background/70 p-4"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">{asset.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {asset.mime} - {humanFileSize(asset.size ?? undefined)}
-                  </p>
+          {isLoading && (
+            <SpinnerEmpty className="col-span-full" />
+          )}
+          {!isLoading &&
+            media.map((asset) => (
+              <div
+                key={asset.id}
+                className="flex flex-col gap-3 rounded-xl border border-border/60 bg-background/70 p-4"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">{asset.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {asset.mime} - {humanFileSize(asset.size ?? undefined)}
+                    </p>
+                  </div>
+                  <Badge variant="secondary">#{asset.id}</Badge>
                 </div>
-                <Badge variant="secondary">#{asset.id}</Badge>
-              </div>
-              <div className="text-xs text-muted-foreground">
-                <p>Stored as {asset.hash}{asset.ext}</p>
-                <p>Provider: {asset.provider}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  asChild
-                >
-                  <a
-                    href={`${MEDIA_BASE_URL}/api/upload/files/${asset.hash}${asset.ext}`}
-                    target="_blank"
-                    rel="noreferrer"
+                <div className="text-xs text-muted-foreground">
+                  <p>Stored as {asset.hash}{asset.ext}</p>
+                  <p>Provider: {asset.provider}</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
                   >
-                    Open File
-                  </a>
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(asset.id)}
-                >
-                  Delete
-                </Button>
+                    <a
+                      href={`${MEDIA_BASE_URL}/api/upload/files/${asset.hash}${asset.ext}`}
+                      download={asset.name ?? undefined}
+                    >
+                      Download
+                    </a>
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(asset.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
-          {media.length === 0 && (
+            ))}
+          {!isLoading && media.length === 0 && (
             <div className="col-span-full rounded-xl border border-dashed border-border/60 px-4 py-6 text-sm text-muted-foreground">
               No assets uploaded yet.
             </div>

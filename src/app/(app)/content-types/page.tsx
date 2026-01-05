@@ -10,6 +10,7 @@ import { formatDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SpinnerEmpty } from "@/components/spinner-empty";
 import {
   Dialog,
   DialogContent,
@@ -62,6 +63,7 @@ export default function ContentTypesPage() {
   const [contentTypes, setContentTypes] = useState<ContentTypeDto[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [form, setForm] = useState({
     name: "",
     pluralName: "",
@@ -81,6 +83,7 @@ export default function ContentTypesPage() {
   };
 
   const loadContentTypes = useCallback(async () => {
+    setIsLoading(true);
     try {
       const data = await apiRequest<ContentTypeDto[]>("/api/content-types");
       setContentTypes(data ?? []);
@@ -88,6 +91,8 @@ export default function ContentTypesPage() {
       toast.error(
         error instanceof Error ? error.message : "Unable to load content types"
       );
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -362,48 +367,59 @@ export default function ContentTypesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {contentTypes.map((type) => (
-                <TableRow key={type.id}>
-                  <TableCell className="font-medium">{type.name}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{type.apiId}</Badge>
-                  </TableCell>
-                  <TableCell>{type.fields?.length ?? 0}</TableCell>
-                  <TableCell>{formatDate(type.updatedAt)}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button asChild variant="ghost" size="sm">
-                        <Link href={`/content/${type.apiId}`}>Open</Link>
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="sm">
-                            Delete
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete {type.name}?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This removes the schema and the dynamic table associated
-                              with it. This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(type.id)}
-                            >
-                              Confirm delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="py-6"
+                  >
+                    <SpinnerEmpty />
                   </TableCell>
                 </TableRow>
-              ))}
-              {contentTypes.length === 0 && (
+              )}
+              {!isLoading &&
+                contentTypes.map((type) => (
+                  <TableRow key={type.id}>
+                    <TableCell className="font-medium">{type.name}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{type.apiId}</Badge>
+                    </TableCell>
+                    <TableCell>{type.fields?.length ?? 0}</TableCell>
+                    <TableCell>{formatDate(type.updatedAt)}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button asChild variant="ghost" size="sm">
+                          <Link href={`/content/${type.apiId}`}>Open</Link>
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm">
+                              Delete
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete {type.name}?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This removes the schema and the dynamic table associated
+                                with it. This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(type.id)}
+                              >
+                                Confirm delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {!isLoading && contentTypes.length === 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={5}

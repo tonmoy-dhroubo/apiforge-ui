@@ -1,4 +1,11 @@
-import { getAuthToken } from "@/lib/auth";
+import {
+  clearAuthToken,
+  getAuthToken,
+  getRefreshToken,
+  setAuthToken,
+  setRefreshToken,
+} from "@/lib/auth";
+import { AuthResponse } from "@/lib/types";
 
 type ApiResponse<T> = {
   success?: boolean;
@@ -34,9 +41,33 @@ async function parseResponse<T>(response: Response) {
   return payload?.data ?? (payload as T | null);
 }
 
-export async function apiRequest<T>(
+async function refreshAccessToken() {
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return false;
+
+  try {
+    const response = await fetch(buildUrl(API_BASE_URL, "/api/auth/refresh"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    });
+    const data = await parseResponse<AuthResponse>(response);
+    if (!data?.token || !data?.refreshToken) {
+      throw new Error("Invalid refresh response");
+    }
+    setAuthToken(data.token);
+    setRefreshToken(data.refreshToken);
+    return true;
+  } catch {
+    clearAuthToken();
+    return false;
+  }
+}
+
+async function requestWithAuth<T>(
+  baseUrl: string,
   path: string,
-  options: RequestInit = {}
+  options: RequestInit
 ): Promise<T | null> {
   const token = getAuthToken();
   const headers = new Headers(options.headers ?? {});
@@ -47,33 +78,45 @@ export async function apiRequest<T>(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(buildUrl(API_BASE_URL, path), {
+  const response = await fetch(buildUrl(baseUrl, path), {
     ...options,
     headers,
   });
 
+  if (response.status === 401) {
+    const refreshed = await refreshAccessToken();
+    if (refreshed) {
+      const retryHeaders = new Headers(options.headers ?? {});
+      if (!retryHeaders.has("Content-Type") && !(options.body instanceof FormData)) {
+        retryHeaders.set("Content-Type", "application/json");
+      }
+      const nextToken = getAuthToken();
+      if (nextToken) {
+        retryHeaders.set("Authorization", `Bearer ${nextToken}`);
+      }
+      const retryResponse = await fetch(buildUrl(baseUrl, path), {
+        ...options,
+        headers: retryHeaders,
+      });
+      return parseResponse<T>(retryResponse);
+    }
+  }
+
   return parseResponse<T>(response);
+}
+
+export async function apiRequest<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T | null> {
+  return requestWithAuth<T>(API_BASE_URL, path, options);
 }
 
 export async function apiMediaRequest<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T | null> {
-  const token = getAuthToken();
-  const headers = new Headers(options.headers ?? {});
-  if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
-    headers.set("Content-Type", "application/json");
-  }
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  const response = await fetch(buildUrl(MEDIA_BASE_URL, path), {
-    ...options,
-    headers,
-  });
-
-  return parseResponse<T>(response);
+  return requestWithAuth<T>(MEDIA_BASE_URL, path, options);
 }
 
 export { API_BASE_URL, MEDIA_BASE_URL };

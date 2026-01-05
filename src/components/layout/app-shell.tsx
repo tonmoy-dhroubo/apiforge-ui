@@ -22,6 +22,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [contentTypes, setContentTypes] = useState<ContentTypeDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<Record<string, unknown> | null>(null);
 
   const title = useMemo(() => {
     if (pathname?.startsWith("/content/")) return "Content Manager";
@@ -59,7 +60,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("apiforge:content-types", handler);
   }, [loadContentTypes]);
 
-  const user = getAuthUser();
+  useEffect(() => {
+    setUser(getAuthUser());
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full">

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { SpinnerEmpty } from "@/components/spinner-empty";
 import {
   Table,
   TableBody,
@@ -69,6 +70,7 @@ export default function PermissionsPage() {
     ContentPermissionDto[]
   >([]);
   const [contentTypes, setContentTypes] = useState<ContentTypeDto[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [apiForm, setApiForm] = useState({
     contentTypeApiId: "",
     endpoint: "/api/content",
@@ -82,6 +84,7 @@ export default function PermissionsPage() {
   });
 
   const loadAll = useCallback(async () => {
+    setIsLoading(true);
     try {
       const [apiData, contentData, types] = await Promise.all([
         apiRequest<ApiPermissionDto[]>("/api/permissions/api"),
@@ -95,6 +98,8 @@ export default function PermissionsPage() {
       toast.error(
         error instanceof Error ? error.message : "Unable to load permissions"
       );
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -133,6 +138,12 @@ export default function PermissionsPage() {
   };
 
   const apiOptions = useMemo(() => contentTypes.map((t) => t.apiId), [contentTypes]);
+
+  if (isLoading) {
+    return (
+      <SpinnerEmpty />
+    );
+  }
 
   return (
     <div className="space-y-6">

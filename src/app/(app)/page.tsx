@@ -9,14 +9,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";
+import { SpinnerEmpty } from "@/components/spinner-empty";
 
 export default function DashboardPage() {
   const [contentTypes, setContentTypes] = useState<ContentTypeDto[]>([]);
   const [media, setMedia] = useState<MediaDto[]>([]);
   const [users, setUsers] = useState<UserDto[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
+      setIsLoading(true);
       try {
         const [types, mediaList, userList] = await Promise.all([
           apiRequest<ContentTypeDto[]>("/api/content-types"),
@@ -30,11 +33,19 @@ export default function DashboardPage() {
         toast.error(
           error instanceof Error ? error.message : "Unable to load dashboard"
         );
+      } finally {
+        setIsLoading(false);
       }
     };
 
     load();
   }, []);
+
+  if (isLoading) {
+    return (
+      <SpinnerEmpty />
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -5,10 +5,12 @@ export function formatDate(value?: string) {
   return date.toLocaleString();
 }
 
-export function humanFileSize(size?: number | null) {
-  if (!size && size !== 0) return "-";
-  if (size < 1024) return `${size.toFixed(1)} KB`;
-  const mb = size / 1024;
+export function humanFileSize(size?: number | string | null) {
+  if (size === null || size === undefined || size === "") return "-";
+  const parsed = typeof size === "number" ? size : Number(size);
+  if (Number.isNaN(parsed)) return "-";
+  if (parsed < 1024) return `${parsed.toFixed(1)} KB`;
+  const mb = parsed / 1024;
   return `${mb.toFixed(2)} MB`;
 }
 

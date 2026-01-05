@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiRequest } from "@/lib/api";
-import { setAuthToken, setAuthUser } from "@/lib/auth";
+import { setAuthToken, setAuthUser, setRefreshToken } from "@/lib/auth";
 import { AuthResponse } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,7 @@ export default function LoginPage() {
       }
 
       setAuthToken(response.token);
+      setRefreshToken(response.refreshToken);
       setAuthUser({
         username: response.username,
         email: response.email,
