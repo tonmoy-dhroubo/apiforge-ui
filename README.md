@@ -25,13 +25,13 @@ NEXT_PUBLIC_MEDIA_BASE_URL=http://localhost:8084
 
 ## Core Routes
 
-- `/login` — Auth login
-- `/` — Dashboard
-- `/content-types` — Content type builder
-- `/content/[apiId]` — Content entries
-- `/media` — Media library
-- `/permissions` — Permissions matrix
-- `/users` — User management
+- `/login` - Auth login
+- `/` - Dashboard
+- `/content-types` - Content type builder
+- `/content/[apiId]` - Content entries
+- `/media` - Media library
+- `/permissions` - Permissions matrix
+- `/users` - User management
 
 ## Notes
 
