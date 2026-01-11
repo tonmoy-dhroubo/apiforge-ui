@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="studio-shell flex min-h-screen w-full">
       <Sidebar contentTypes={contentTypes} loading={loading} />
       <div className="flex flex-1 flex-col">
         <TopBar
@@ -79,7 +79,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           }}
         />
         <main className="flex-1 px-6 pb-12 pt-6 lg:px-10">
-          {children}
+          <div className="mx-auto w-full max-w-6xl">
+            {children}
+          </div>
         </main>
       </div>
     </div>

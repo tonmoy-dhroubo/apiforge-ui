@@ -37,7 +37,7 @@ export function TopBar({
   onLogout: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-border/60 bg-background/75 backdrop-blur-xl">
       <div className="flex items-center justify-between gap-4 px-6 py-4 lg:px-10">
         <div className="flex items-center gap-3">
           <Sheet>
@@ -46,7 +46,7 @@ export function TopBar({
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-72 bg-sidebar">
+            <SheetContent side="left" className="w-72 bg-sidebar/90 backdrop-blur-xl">
               <SheetHeader>
                 <SheetTitle>ApiForge Studio</SheetTitle>
               </SheetHeader>
@@ -86,7 +86,7 @@ export function TopBar({
             </SheetContent>
           </Sheet>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            <p className="studio-kicker">
               ApiForge
             </p>
             <h2 className="text-lg font-semibold text-foreground lg:text-xl">
@@ -101,7 +101,7 @@ export function TopBar({
               {user?.username ? String(user.username) : "Administrator"}
             </p>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground shadow-sm">
             <UserCircle2 className="h-6 w-6" />
           </div>
           <ThemeToggle />

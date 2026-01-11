@@ -165,7 +165,7 @@ export default function ContentTypesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-semibold">Content Types</h3>
+          <p className="studio-heading">Content Types</p>
           <p className="text-sm text-muted-foreground">
             Define collection schemas that power your REST endpoints.
           </p>
