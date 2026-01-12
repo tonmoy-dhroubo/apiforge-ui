@@ -130,6 +130,7 @@ export default function MediaPage() {
 						<Button
 							onClick={handleUpload}
 							disabled={files.length === 0 || uploading}
+							className="w-full md:w-auto"
 						>
 							{uploading
 								? "Uploading..."
@@ -154,7 +155,7 @@ export default function MediaPage() {
 								return (
 									<div
 										key={key}
-										className="flex items-center justify-between gap-3"
+										className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
 									>
 										<div>
 											<p className="font-medium text-foreground">
@@ -226,7 +227,7 @@ export default function MediaPage() {
 										/>
 									</div>
 								)}
-								<div className="flex items-center justify-between">
+								<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 									<div>
 										<p className="font-medium">
 											{asset.name}

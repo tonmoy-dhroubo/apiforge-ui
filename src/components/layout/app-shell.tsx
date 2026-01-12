@@ -91,8 +91,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 						router.push("/login");
 					}}
 				/>
-				<main className="flex-1 px-6 pb-12 pt-6 lg:px-10">
-					<div className="mx-auto w-full max-w-6xl">{children}</div>
+				<main className="flex-1 px-4 pb-10 pt-5 sm:px-6 sm:pb-12 sm:pt-6 lg:px-10">
+					<div className="mx-auto w-full max-w-6xl min-w-0">
+						{children}
+					</div>
 				</main>
 			</div>
 		</div>

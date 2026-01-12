@@ -79,7 +79,7 @@ export default function DashboardPage() {
 								Live
 							</Badge>
 						</CardHeader>
-						<CardContent className="flex items-center justify-between">
+						<CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<p className="text-3xl font-semibold text-foreground">
 								{card.value}
 							</p>
@@ -100,7 +100,7 @@ export default function DashboardPage() {
 						{contentTypes.slice(0, 6).map((type) => (
 							<div
 								key={type.id}
-								className="flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-4 py-3"
+								className="flex flex-col gap-2 rounded-xl border border-border/60 bg-background/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
 							>
 								<div>
 									<p className="font-medium text-foreground">

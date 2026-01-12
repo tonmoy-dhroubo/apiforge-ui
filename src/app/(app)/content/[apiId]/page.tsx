@@ -769,15 +769,15 @@ export default function ContentEntriesPage() {
 					<CardTitle>Entries</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="mb-4 flex flex-wrap items-center gap-3">
+					<div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
 						<Input
 							placeholder="Search entries"
 							value={search}
 							onChange={(event) => setSearch(event.target.value)}
-							className="max-w-xs"
+							className="w-full sm:max-w-xs"
 						/>
 						<Select value={sort} onValueChange={setSort}>
-							<SelectTrigger className="w-48">
+							<SelectTrigger className="w-full sm:w-48">
 								<SelectValue placeholder="Sort by" />
 							</SelectTrigger>
 							<SelectContent>
@@ -799,7 +799,7 @@ export default function ContentEntriesPage() {
 								setPageSize(Number(value))
 							}
 						>
-							<SelectTrigger className="w-36">
+							<SelectTrigger className="w-full sm:w-36">
 								<SelectValue placeholder="Rows per page" />
 							</SelectTrigger>
 							<SelectContent>
@@ -812,7 +812,11 @@ export default function ContentEntriesPage() {
 						</Select>
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button variant="secondary" size="sm">
+								<Button
+									variant="secondary"
+									size="sm"
+									className="w-full sm:w-auto"
+								>
 									Visible fields
 								</Button>
 							</DropdownMenuTrigger>

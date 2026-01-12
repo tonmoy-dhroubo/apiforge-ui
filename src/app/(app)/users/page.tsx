@@ -108,12 +108,12 @@ export default function UsersPage() {
 					<CardTitle>Users & Roles</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+					<div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<Input
 							placeholder="Search by username, email, or role"
 							value={search}
 							onChange={(event) => setSearch(event.target.value)}
-							className="max-w-sm"
+							className="w-full sm:max-w-sm"
 						/>
 						<div className="text-xs text-muted-foreground">
 							{filteredUsers.length} user

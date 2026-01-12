@@ -21,9 +21,9 @@ export default function LandingPage() {
 	return (
 		<div className="min-h-screen bg-background text-foreground">
 			<header className="border-b border-border/60 bg-background/75 backdrop-blur-xl">
-				<div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 lg:px-10">
+				<div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
 					<Logo />
-					<div className="flex items-center gap-3">
+					<div className="flex flex-wrap items-center gap-3">
 						{isAuthed ? (
 							<Button asChild variant="ghost" size="icon" aria-label="Open dashboard">
 								<Link href="/dashboard">
@@ -43,10 +43,10 @@ export default function LandingPage() {
 					</div>
 				</div>
 			</header>
-			<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-6 py-16 lg:flex-row lg:items-center lg:gap-16 lg:px-10">
+			<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:flex-row lg:items-center lg:gap-16 lg:px-10">
 				<div className="space-y-6">
 					<p className="studio-heading">Content Ops</p>
-					<h1 className="text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
+					<h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
 						Model content.
 						<br />
 						Ship APIs.
