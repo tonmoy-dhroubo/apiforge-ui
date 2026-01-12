@@ -5,37 +5,37 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
+	variable: "--font-geist-sans",
+	subsets: ["latin"],
+	display: "swap",
 });
 
 const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
+	variable: "--font-geist-mono",
+	subsets: ["latin"],
+	display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ApiForge Studio",
-  description: "Admin studio for ApiForge Headless CMS",
+	title: "ApiForge Studio",
+	description: "Admin studio for ApiForge Headless CMS",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} min-h-screen font-sans antialiased`}
-      >
-        <ThemeProvider>
-          {children}
-          <Toaster richColors closeButton />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<body
+				className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} min-h-screen font-sans antialiased`}
+			>
+				<ThemeProvider>
+					{children}
+					<Toaster richColors closeButton />
+				</ThemeProvider>
+			</body>
+		</html>
+	);
 }

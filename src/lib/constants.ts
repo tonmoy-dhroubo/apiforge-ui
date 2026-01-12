@@ -1,9 +1,4 @@
-export const ROLE_OPTIONS = [
-  "SUPER_ADMIN",
-  "ADMIN",
-  "MODERATOR",
-  "REGISTERED",
-];
+export const ROLE_OPTIONS = ["SUPER_ADMIN", "ADMIN", "MODERATOR", "REGISTERED"];
 
 export const PERMISSION_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 
@@ -12,12 +7,12 @@ export const CONTENT_ACTIONS = ["CREATE", "READ", "UPDATE", "DELETE"];
 export const RELATION_TYPES = ["ONE_TO_ONE", "ONE_TO_MANY", "MANY_TO_MANY"];
 
 export const FIELD_TYPES = [
-  "SHORT_TEXT",
-  "LONG_TEXT",
-  "RICH_TEXT",
-  "NUMBER",
-  "BOOLEAN",
-  "DATETIME",
-  "MEDIA",
-  "RELATION",
+	"SHORT_TEXT",
+	"LONG_TEXT",
+	"RICH_TEXT",
+	"NUMBER",
+	"BOOLEAN",
+	"DATETIME",
+	"MEDIA",
+	"RELATION",
 ] as const;
