@@ -15,9 +15,9 @@ type ApiResponse<T> = {
 };
 
 const API_BASE_URL =
-	process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080";
+	process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:7080";
 const MEDIA_BASE_URL =
-	process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? "http://localhost:8084";
+	process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? "http://localhost:7084";
 
 function buildUrl(baseUrl: string, path: string) {
 	if (path.startsWith("http")) return path;

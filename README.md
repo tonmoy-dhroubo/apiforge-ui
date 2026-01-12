@@ -16,8 +16,8 @@ Open `http://localhost:3000` in your browser.
 Create a `.env.local` if you need to override defaults:
 
 ```
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
-NEXT_PUBLIC_MEDIA_BASE_URL=http://localhost:8084
+NEXT_PUBLIC_API_BASE_URL=http://localhost:7080
+NEXT_PUBLIC_MEDIA_BASE_URL=http://localhost:7084
 ```
 
 - `NEXT_PUBLIC_API_BASE_URL` points at the API gateway.
@@ -26,7 +26,8 @@ NEXT_PUBLIC_MEDIA_BASE_URL=http://localhost:8084
 ## Core Routes
 
 - `/login` - Auth login
-- `/` - Dashboard
+- `/` - Landing page
+- `/dashboard` - Dashboard
 - `/content-types` - Content type builder
 - `/content/[apiId]` - Content entries
 - `/media` - Media library

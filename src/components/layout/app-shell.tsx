@@ -10,7 +10,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { TopBar } from "@/components/layout/top-bar";
 
 const PAGE_TITLES: Record<string, string> = {
-	"/": "Dashboard",
+	"/dashboard": "Dashboard",
 	"/content-types": "Content Type Builder",
 	"/media": "Media Library",
 	"/permissions": "Permissions",

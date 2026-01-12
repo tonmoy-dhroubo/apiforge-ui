@@ -572,7 +572,7 @@ export default function ContentEntriesPage() {
 								Pick relation
 							</Button>
 						</div>
-						{value && (
+						{value !== undefined && value !== null && (
 							<p className="text-xs text-muted-foreground">
 								Selected ID: {String(value)}
 							</p>

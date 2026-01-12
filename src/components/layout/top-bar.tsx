@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { LogOut, Menu, UserCircle2 } from "lucide-react";
+import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -16,7 +17,8 @@ import { Separator } from "@/components/ui/separator";
 import { ContentTypeDto } from "@/lib/types";
 
 const MOBILE_LINKS = [
-	{ href: "/", label: "Dashboard" },
+	{ href: "/", label: "Landing" },
+	{ href: "/dashboard", label: "Dashboard" },
 	{ href: "/content-types", label: "Content Types" },
 	{ href: "/media", label: "Media" },
 	{ href: "/permissions", label: "Permissions" },
@@ -98,12 +100,17 @@ export function TopBar({
 							</div>
 						</SheetContent>
 					</Sheet>
-					<div>
-						<p className="studio-kicker">ApiForge</p>
-						<h2 className="text-lg font-semibold text-foreground lg:text-xl">
-							{title}
-						</h2>
-					</div>
+					<Link href="/" className="flex items-center gap-3" aria-label="Go to landing page">
+						<Logo showText={false} size={34} />
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+								APIFORGE STUDIO
+							</p>
+							<h2 className="text-lg font-semibold text-foreground lg:text-xl">
+								{title}
+							</h2>
+						</div>
+				</Link>
 				</div>
 				<div className="flex items-center gap-3">
 					<div className="hidden text-right text-sm text-muted-foreground md:block">
@@ -116,10 +123,15 @@ export function TopBar({
 								: "Administrator"}
 						</p>
 					</div>
-					<div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground shadow-sm">
-						<UserCircle2 className="h-6 w-6" />
-					</div>
 					<ThemeToggle />
+					<Button
+						variant="ghost"
+						size="icon"
+						aria-label="Account"
+						className="rounded-full border border-border/70 bg-card/60 text-muted-foreground shadow-sm"
+					>
+						<UserCircle2 className="h-6 w-6" />
+					</Button>
 					<Button
 						variant="secondary"
 						className="hidden md:inline-flex"

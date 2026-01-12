@@ -9,11 +9,11 @@ import {
 	ChevronRight,
 	FileText,
 	FolderKanban,
-	KeyRound,
 	LayoutGrid,
 	ShieldCheck,
 	Users,
 } from "lucide-react";
+import { Logo } from "@/components/brand/logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { ContentTypeDto } from "@/lib/types";
 
 const NAV_ITEMS = [
-	{ href: "/", label: "Dashboard", icon: LayoutGrid },
+	{ href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
 	{ href: "/content-types", label: "Content Types", icon: Boxes },
 	{ href: "/media", label: "Media Library", icon: FolderKanban },
 	{ href: "/permissions", label: "Permissions", icon: ShieldCheck },
@@ -126,17 +126,9 @@ export function Sidebar({
 						: "flex items-center gap-3 px-6 py-5",
 				)}
 			>
-				<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sidebar-primary text-sidebar-primary-foreground">
-					<KeyRound className="h-5 w-5" />
-				</div>
-				{!collapsed && (
-					<div>
-						<p className="text-sm font-semibold uppercase tracking-widest text-sidebar-foreground/60 font-mono">
-							ApiForge
-						</p>
-						<h1 className="text-lg font-semibold">Studio</h1>
-					</div>
-				)}
+				<Link href="/" aria-label="Go to landing page">
+					<Logo showText={!collapsed} size={44} />
+				</Link>
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<Button

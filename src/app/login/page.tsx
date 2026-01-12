@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiRequest } from "@/lib/api";
@@ -10,12 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Logo } from "@/components/brand/logo";
+import { getAuthToken } from "@/lib/auth";
 
 export default function LoginPage() {
 	const router = useRouter();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		if (getAuthToken()) {
+			router.push("/dashboard");
+		}
+	}, [router]);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -38,7 +46,7 @@ export default function LoginPage() {
 				roles: response.roles,
 			});
 			toast.success("Welcome back to ApiForge");
-			router.push("/");
+			router.push("/dashboard");
 		} catch (error) {
 			toast.error(
 				error instanceof Error ? error.message : "Unable to sign in",
@@ -54,7 +62,7 @@ export default function LoginPage() {
 				<div className="hidden space-y-6 lg:block">
 					<p className="studio-heading">Studio Access</p>
 					<div className="space-y-3">
-						<p className="studio-kicker">ApiForge</p>
+						<Logo />
 						<h1 className="text-4xl font-semibold tracking-tight text-foreground">
 							Model content. Ship APIs.
 						</h1>
@@ -140,7 +148,7 @@ export default function LoginPage() {
 							<p>
 								Default gateway URL:{" "}
 								<span className="font-mono">
-									http://localhost:8080
+									http://localhost:7080
 								</span>
 							</p>
 						</div>

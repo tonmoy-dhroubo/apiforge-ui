@@ -29,6 +29,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
+				suppressHydrationWarning
 				className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} min-h-screen font-sans antialiased`}
 			>
 				<ThemeProvider>
