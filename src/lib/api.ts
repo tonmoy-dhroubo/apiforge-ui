@@ -36,7 +36,9 @@ async function parseResponse<T>(response: Response) {
 	}
 
 	if (payload && payload.success === false) {
-		throw new Error(payload.error || payload.message || "Request failed");
+		throw new Error(
+			payload.error || payload.message || "Request failed without details",
+		);
 	}
 
 	return payload?.data ?? (payload as T | null);
@@ -55,12 +57,12 @@ async function refreshAccessToken() {
 				body: JSON.stringify({ refreshToken }),
 			},
 		);
-		const data = await parseResponse<AuthResponse>(response);
-		if (!data?.token || !data?.refreshToken) {
-			throw new Error("Invalid refresh response");
+		const refreshPayload = await parseResponse<AuthResponse>(response);
+		if (!refreshPayload?.token || !refreshPayload?.refreshToken) {
+			throw new Error("Refresh response missing tokens");
 		}
-		setAuthToken(data.token);
-		setRefreshToken(data.refreshToken);
+		setAuthToken(refreshPayload.token);
+		setRefreshToken(refreshPayload.refreshToken);
 		return true;
 	} catch {
 		clearAuthToken();

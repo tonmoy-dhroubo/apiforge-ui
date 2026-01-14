@@ -32,9 +32,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 	const loadContentTypes = useCallback(async () => {
 		setLoading(true);
 		try {
-			const data =
+			const contentTypeList =
 				await apiRequest<ContentTypeDto[]>("/api/content-types");
-			setContentTypes(data ?? []);
+			setContentTypes(contentTypeList ?? []);
 		} catch (error) {
 			toast.error(
 				error instanceof Error

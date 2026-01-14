@@ -40,8 +40,8 @@ export default function UsersPage() {
 	const loadUsers = useCallback(async () => {
 		setIsLoading(true);
 		try {
-			const data = await apiRequest<UserDto[]>("/api/auth/users");
-			setUsers(data ?? []);
+			const userList = await apiRequest<UserDto[]>("/api/auth/users");
+			setUsers(userList ?? []);
 		} catch (error) {
 			toast.error(
 				error instanceof Error ? error.message : "Unable to load users",

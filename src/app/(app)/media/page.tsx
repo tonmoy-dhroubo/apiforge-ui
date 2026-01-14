@@ -26,8 +26,8 @@ export default function MediaPage() {
 	const loadMedia = useCallback(async () => {
 		setIsLoading(true);
 		try {
-			const data = await apiMediaRequest<MediaDto[]>("/api/upload");
-			setMedia(data ?? []);
+			const mediaItems = await apiMediaRequest<MediaDto[]>("/api/upload");
+			setMedia(mediaItems ?? []);
 		} catch (error) {
 			toast.error(
 				error instanceof Error ? error.message : "Unable to load media",
