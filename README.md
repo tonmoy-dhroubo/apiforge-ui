@@ -4,10 +4,13 @@ Admin UI for the `apiforge-headless-cms-spring` backend. The interface mirrors S
 
 ## UI Screenshots
 
-![Dashboard](docs/screenshots/dashboard.png)
-![Content Types](docs/screenshots/content-types.png)
-![Content Entry](docs/screenshots/content-entry.png)
-![Permissions Matrix](docs/screenshots/permissions.png)
+| Dashboard | Content Types |
+| --- | --- |
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Content Types](docs/screenshots/content-types.png) |
+
+| Content Entry | Permissions Matrix |
+| --- | --- |
+| ![Content Entry](docs/screenshots/content-entry.png) | ![Permissions Matrix](docs/screenshots/permissions.png) |
 
 ## Getting Started
 
